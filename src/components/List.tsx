@@ -1,147 +1,65 @@
-import { Menu, Transition } from "@headlessui/react"
+import { Menu, Transition } from "@headlessui/react";
 import {
   ArrowDownIcon,
   ArrowUpIcon,
   EllipsisVerticalIcon,
   PencilIcon,
   PlusCircleIcon,
-  TrashIcon
-} from "@heroicons/react/20/solid"
-import { Fragment } from "react"
+  TrashIcon,
+} from "@heroicons/react/20/solid";
+import { Fragment } from "react";
 
 const statuses = {
   Complete: "text-green-700 bg-green-50 ring-green-600/20",
   "In progress": "text-gray-600 bg-gray-50 ring-gray-500/10",
-  Archived: "text-yellow-800 bg-yellow-50 ring-yellow-600/20"
-}
+  Archived: "text-yellow-800 bg-yellow-50 ring-yellow-600/20",
+};
 const projects = [
   {
     id: 1,
     name: "My personal account",
     status: "Complete",
     lastUpdatedOn: "Leslie Alexander",
-    lastUsedOn: "March 17, 2023"
+    lastUsedOn: "March 17, 2023",
   },
   {
     id: 2,
     name: "Main Company account",
     status: "In progress",
     lastUpdatedOn: "Leslie Alexander",
-    lastUsedOn: "May 5, 2023"
+    lastUsedOn: "May 5, 2023",
   },
   {
     id: 3,
     name: "Freelance project",
     status: "In progress",
     lastUpdatedOn: "Courtney Henry",
-    lastUsedOn: "May 25, 2023"
+    lastUsedOn: "May 25, 2023",
   },
   {
     id: 4,
     name: "Billings portal",
     status: "Archived",
     lastUpdatedOn: "Leonard Krasner",
-    lastUsedOn: "June 7, 2023"
+    lastUsedOn: "June 7, 2023",
   },
-  {
-    id: 1,
-    name: "My personal account",
-    status: "Complete",
-    lastUpdatedOn: "Leslie Alexander",
-    lastUsedOn: "March 17, 2023"
-  },
-  {
-    id: 2,
-    name: "Main Company account",
-    status: "In progress",
-    lastUpdatedOn: "Leslie Alexander",
-    lastUsedOn: "May 5, 2023"
-  },
-  {
-    id: 3,
-    name: "Freelance project",
-    status: "In progress",
-    lastUpdatedOn: "Courtney Henry",
-    lastUsedOn: "May 25, 2023"
-  },
-  {
-    id: 4,
-    name: "Billings portal",
-    status: "Archived",
-    lastUpdatedOn: "Leonard Krasner",
-    lastUsedOn: "June 7, 2023"
-  },
-  {
-    id: 1,
-    name: "My personal account",
-    status: "Complete",
-    lastUpdatedOn: "Leslie Alexander",
-    lastUsedOn: "March 17, 2023"
-  },
-  {
-    id: 2,
-    name: "Main Company account",
-    status: "In progress",
-    lastUpdatedOn: "Leslie Alexander",
-    lastUsedOn: "May 5, 2023"
-  },
-  {
-    id: 3,
-    name: "Freelance project",
-    status: "In progress",
-    lastUpdatedOn: "Courtney Henry",
-    lastUsedOn: "May 25, 2023"
-  },
-  {
-    id: 4,
-    name: "Billings portal",
-    status: "Archived",
-    lastUpdatedOn: "Leonard Krasner",
-    lastUsedOn: "June 7, 2023"
-  },
-  {
-    id: 1,
-    name: "My personal account",
-    status: "Complete",
-    lastUpdatedOn: "Leslie Alexander",
-    lastUsedOn: "March 17, 2023"
-  },
-  {
-    id: 2,
-    name: "Main Company account",
-    status: "In progress",
-    lastUpdatedOn: "Leslie Alexander",
-    lastUsedOn: "May 5, 2023"
-  },
-  {
-    id: 3,
-    name: "Freelance project",
-    status: "In progress",
-    lastUpdatedOn: "Courtney Henry",
-    lastUsedOn: "May 25, 2023"
-  },
-  {
-    id: 4,
-    name: "Billings portal",
-    status: "Archived",
-    lastUpdatedOn: "Leonard Krasner",
-    lastUsedOn: "June 7, 2023"
-  }
-]
+];
 
 function classNames(...classes: string[]): string {
-  return classes.filter(Boolean).join(" ")
+  return classes.filter(Boolean).join(" ");
 }
 
 export default function List() {
   return (
     <ul
       role="list"
-      className="divide-y divide-gray-100 w-[400px] overflow-y-scroll overflow-x-clip h-96">
+      className="divide-y divide-gray-100 w-[400px] overflow-y-scroll overflow-x-clip h-96"
+    >
       {projects.map((project) => (
         <li
           key={project.id}
-          className="flex items-center justify-between gap-x-6 py-5">
+          className="flex items-center justify-between gap-x-6 py-5"
+        >
           <div className="min-w-0">
             <div className="flex items-start gap-x-3">
               <p className="text-sm font-semibold leading-6 text-gray-900">
@@ -186,15 +104,17 @@ export default function List() {
                 enterTo="transform opacity-100 scale-100"
                 leave="transition ease-in duration-75"
                 leaveFrom="transform opacity-100 scale-100"
-                leaveTo="transform opacity-0 scale-95">
+                leaveTo="transform opacity-0 scale-95"
+              >
                 <Menu.Items className="absolute right-0 z-10 mt-2 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
                   <Menu.Item>
                     {({ active }) => (
                       <button
                         className={classNames(
                           active ? "bg-gray-50" : "",
-                          "flex gap-1 px-3 py-1 text-sm leading-6 text-gray-900 w-full text-left"
-                        )}>
+                          "flex gap-1 px-3 py-1 text-sm leading-6 text-gray-900 w-full text-left",
+                        )}
+                      >
                         <PencilIcon
                           className="mr-2 h-4 w-4 text-gray-400 -mb-1 mt-1"
                           aria-hidden="true"
@@ -208,8 +128,9 @@ export default function List() {
                       <button
                         className={classNames(
                           active ? "bg-gray-50" : "",
-                          "flex gap-1 px-3 py-1 text-sm leading-6 text-gray-900 w-full text-left"
-                        )}>
+                          "flex gap-1 px-3 py-1 text-sm leading-6 text-gray-900 w-full text-left",
+                        )}
+                      >
                         <ArrowUpIcon
                           className="mr-2 h-4 w-4 text-gray-400 -mb-1 mt-1"
                           aria-hidden="true"
@@ -223,8 +144,9 @@ export default function List() {
                       <button
                         className={classNames(
                           active ? "bg-gray-50" : "",
-                          "flex gap-1 px-3 py-1 text-sm leading-6 text-gray-900 w-full text-left"
-                        )}>
+                          "flex gap-1 px-3 py-1 text-sm leading-6 text-gray-900 w-full text-left",
+                        )}
+                      >
                         <ArrowDownIcon
                           className="mr-2 h-4 w-4 text-gray-400 -mb-1 mt-1"
                           aria-hidden="true"
@@ -238,8 +160,9 @@ export default function List() {
                       <button
                         className={classNames(
                           active ? "bg-gray-50" : "",
-                          "flex gap-1 px-3 py-1 text-sm leading-6 text-gray-900 w-full text-left"
-                        )}>
+                          "flex gap-1 px-3 py-1 text-sm leading-6 text-gray-900 w-full text-left",
+                        )}
+                      >
                         <TrashIcon
                           className="mr-2 h-4 w-4 text-gray-400 -mb-1 mt-1"
                           aria-hidden="true"
@@ -255,5 +178,5 @@ export default function List() {
         </li>
       ))}
     </ul>
-  )
+  );
 }
