@@ -1,5 +1,12 @@
 import { Menu, Transition } from "@headlessui/react"
-import { EllipsisVerticalIcon } from "@heroicons/react/20/solid"
+import {
+  ArrowDownIcon,
+  ArrowUpIcon,
+  EllipsisVerticalIcon,
+  PencilIcon,
+  PlusCircleIcon,
+  TrashIcon
+} from "@heroicons/react/20/solid"
 import { Fragment } from "react"
 
 const statuses = {
@@ -10,48 +17,31 @@ const statuses = {
 const projects = [
   {
     id: 1,
-    name: "GraphQL API",
-    href: "#",
+    name: "My personal account",
     status: "Complete",
-    createdBy: "Leslie Alexander",
-    dueDate: "March 17, 2023",
-    dueDateTime: "2023-03-17T00:00Z"
+    lastUpdatedOn: "Leslie Alexander",
+    lastUsedOn: "March 17, 2023"
   },
   {
     id: 2,
-    name: "New benefits plan",
-    href: "#",
+    name: "Main Company account",
     status: "In progress",
-    createdBy: "Leslie Alexander",
-    dueDate: "May 5, 2023",
-    dueDateTime: "2023-05-05T00:00Z"
+    lastUpdatedOn: "Leslie Alexander",
+    lastUsedOn: "May 5, 2023"
   },
   {
     id: 3,
-    name: "Onboarding emails",
-    href: "#",
+    name: "Freelance project",
     status: "In progress",
-    createdBy: "Courtney Henry",
-    dueDate: "May 25, 2023",
-    dueDateTime: "2023-05-25T00:00Z"
+    lastUpdatedOn: "Courtney Henry",
+    lastUsedOn: "May 25, 2023"
   },
   {
     id: 4,
-    name: "iOS app",
-    href: "#",
-    status: "In progress",
-    createdBy: "Leonard Krasner",
-    dueDate: "June 7, 2023",
-    dueDateTime: "2023-06-07T00:00Z"
-  },
-  {
-    id: 5,
-    name: "Marketing site redesign",
-    href: "#",
+    name: "Billings portal",
     status: "Archived",
-    createdBy: "Courtney Henry",
-    dueDate: "June 10, 2023",
-    dueDateTime: "2023-06-10T00:00Z"
+    lastUpdatedOn: "Leonard Krasner",
+    lastUsedOn: "June 7, 2023"
   }
 ]
 
@@ -71,31 +61,33 @@ export default function List() {
               <p className="text-sm font-semibold leading-6 text-gray-900">
                 {project.name}
               </p>
-              <p
+              {/* <p
                 className={classNames(
                   statuses[project.status],
                   "rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset"
                 )}>
                 {project.status}
-              </p>
+              </p> */}
             </div>
             <div className="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500">
-              <p className="whitespace-nowrap">
-                Due on{" "}
-                <time dateTime={project.dueDateTime}>{project.dueDate}</time>
-              </p>
+              <p className="whitespace-nowrap">{project.lastUsedOn}</p>
               <svg viewBox="0 0 2 2" className="h-0.5 w-0.5 fill-current">
                 <circle cx={1} cy={1} r={1} />
               </svg>
-              <p className="truncate">Created by {project.createdBy}</p>
+              <p className="truncate">{project.lastUpdatedOn}</p>
             </div>
           </div>
           <div className="flex flex-none items-center gap-x-4">
-            <a
-              href={project.href}
-              className="hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block">
-              View project<span className="sr-only">, {project.name}</span>
-            </a>
+            <button className="flex gap-1 items-center justify-center rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+              <PlusCircleIcon className="h-5 w-5" aria-hidden="true" />
+              {`Autofill`}
+              <span className="sr-only">, {project.name}</span>
+            </button>
+            {/* Smaller substitue for autofill button */}
+            {/* <button className="-m-2.5 block p-2.5 text-gray-500 hover:text-gray-900">
+              <span className="sr-only">{`Autofill Account`}</span>
+              <PlusCircleIcon className="h-5 w-5" aria-hidden="true" />
+            </button> */}
             <Menu as="div" className="relative flex-none">
               <Menu.Button className="-m-2.5 block p-2.5 text-gray-500 hover:text-gray-900">
                 <span className="sr-only">Open options</span>
@@ -112,38 +104,62 @@ export default function List() {
                 <Menu.Items className="absolute right-0 z-10 mt-2 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
                   <Menu.Item>
                     {({ active }) => (
-                      <a
-                        href="#"
+                      <button
                         className={classNames(
                           active ? "bg-gray-50" : "",
-                          "block px-3 py-1 text-sm leading-6 text-gray-900"
+                          "flex gap-1 px-3 py-1 text-sm leading-6 text-gray-900 w-full text-left"
                         )}>
+                        <PencilIcon
+                          className="mr-2 h-4 w-4 text-gray-400 -mb-1 mt-1"
+                          aria-hidden="true"
+                        />
                         Edit<span className="sr-only">, {project.name}</span>
-                      </a>
+                      </button>
                     )}
                   </Menu.Item>
                   <Menu.Item>
                     {({ active }) => (
-                      <a
-                        href="#"
+                      <button
                         className={classNames(
                           active ? "bg-gray-50" : "",
-                          "block px-3 py-1 text-sm leading-6 text-gray-900"
+                          "flex gap-1 px-3 py-1 text-sm leading-6 text-gray-900 w-full text-left"
                         )}>
-                        Move<span className="sr-only">, {project.name}</span>
-                      </a>
+                        <ArrowUpIcon
+                          className="mr-2 h-4 w-4 text-gray-400 -mb-1 mt-1"
+                          aria-hidden="true"
+                        />
+                        Move up
+                      </button>
                     )}
                   </Menu.Item>
                   <Menu.Item>
                     {({ active }) => (
-                      <a
-                        href="#"
+                      <button
                         className={classNames(
                           active ? "bg-gray-50" : "",
-                          "block px-3 py-1 text-sm leading-6 text-gray-900"
+                          "flex gap-1 px-3 py-1 text-sm leading-6 text-gray-900 w-full text-left"
                         )}>
+                        <ArrowDownIcon
+                          className="mr-2 h-4 w-4 text-gray-400 -mb-1 mt-1"
+                          aria-hidden="true"
+                        />
+                        Move down
+                      </button>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <button
+                        className={classNames(
+                          active ? "bg-gray-50" : "",
+                          "flex gap-1 px-3 py-1 text-sm leading-6 text-gray-900 w-full text-left"
+                        )}>
+                        <TrashIcon
+                          className="mr-2 h-4 w-4 text-gray-400 -mb-1 mt-1"
+                          aria-hidden="true"
+                        />
                         Delete<span className="sr-only">, {project.name}</span>
-                      </a>
+                      </button>
                     )}
                   </Menu.Item>
                 </Menu.Items>
