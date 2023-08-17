@@ -42,6 +42,90 @@ const projects = [
     status: "Archived",
     lastUpdatedOn: "Leonard Krasner",
     lastUsedOn: "June 7, 2023"
+  },
+  {
+    id: 1,
+    name: "My personal account",
+    status: "Complete",
+    lastUpdatedOn: "Leslie Alexander",
+    lastUsedOn: "March 17, 2023"
+  },
+  {
+    id: 2,
+    name: "Main Company account",
+    status: "In progress",
+    lastUpdatedOn: "Leslie Alexander",
+    lastUsedOn: "May 5, 2023"
+  },
+  {
+    id: 3,
+    name: "Freelance project",
+    status: "In progress",
+    lastUpdatedOn: "Courtney Henry",
+    lastUsedOn: "May 25, 2023"
+  },
+  {
+    id: 4,
+    name: "Billings portal",
+    status: "Archived",
+    lastUpdatedOn: "Leonard Krasner",
+    lastUsedOn: "June 7, 2023"
+  },
+  {
+    id: 1,
+    name: "My personal account",
+    status: "Complete",
+    lastUpdatedOn: "Leslie Alexander",
+    lastUsedOn: "March 17, 2023"
+  },
+  {
+    id: 2,
+    name: "Main Company account",
+    status: "In progress",
+    lastUpdatedOn: "Leslie Alexander",
+    lastUsedOn: "May 5, 2023"
+  },
+  {
+    id: 3,
+    name: "Freelance project",
+    status: "In progress",
+    lastUpdatedOn: "Courtney Henry",
+    lastUsedOn: "May 25, 2023"
+  },
+  {
+    id: 4,
+    name: "Billings portal",
+    status: "Archived",
+    lastUpdatedOn: "Leonard Krasner",
+    lastUsedOn: "June 7, 2023"
+  },
+  {
+    id: 1,
+    name: "My personal account",
+    status: "Complete",
+    lastUpdatedOn: "Leslie Alexander",
+    lastUsedOn: "March 17, 2023"
+  },
+  {
+    id: 2,
+    name: "Main Company account",
+    status: "In progress",
+    lastUpdatedOn: "Leslie Alexander",
+    lastUsedOn: "May 5, 2023"
+  },
+  {
+    id: 3,
+    name: "Freelance project",
+    status: "In progress",
+    lastUpdatedOn: "Courtney Henry",
+    lastUsedOn: "May 25, 2023"
+  },
+  {
+    id: 4,
+    name: "Billings portal",
+    status: "Archived",
+    lastUpdatedOn: "Leonard Krasner",
+    lastUsedOn: "June 7, 2023"
   }
 ]
 
@@ -51,7 +135,9 @@ function classNames(...classes: string[]): string {
 
 export default function List() {
   return (
-    <ul role="list" className="divide-y divide-gray-100 w-[400px]">
+    <ul
+      role="list"
+      className="divide-y divide-gray-100 w-[400px] overflow-y-scroll overflow-x-clip h-96">
       {projects.map((project) => (
         <li
           key={project.id}
