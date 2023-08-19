@@ -9,11 +9,13 @@ import {
 } from "@heroicons/react/20/solid";
 import { Fragment } from "react";
 
-const statuses = {
-  Complete: "text-green-700 bg-green-50 ring-green-600/20",
-  "In progress": "text-gray-600 bg-gray-50 ring-gray-500/10",
-  Archived: "text-yellow-800 bg-yellow-50 ring-yellow-600/20",
-};
+import { classNames } from "~utils";
+
+// const statuses = {
+//   Complete: "text-green-700 bg-green-50 ring-green-600/20",
+//   "In progress": "text-gray-600 bg-gray-50 ring-gray-500/10",
+//   Archived: "text-yellow-800 bg-yellow-50 ring-yellow-600/20",
+// };
 const projects = [
   {
     id: 1,
@@ -45,16 +47,9 @@ const projects = [
   },
 ];
 
-function classNames(...classes: string[]): string {
-  return classes.filter(Boolean).join(" ");
-}
-
 export default function List() {
   return (
-    <ul
-      role="list"
-      className="divide-y divide-gray-100 w-[400px] overflow-y-scroll overflow-x-clip h-96"
-    >
+    <ul role="list" className="divide-y divide-gray-100 w-[400px] h-96">
       {projects.map((project) => (
         <li
           key={project.id}
