@@ -1,6 +1,6 @@
 import { Dialog, RadioGroup, Transition } from "@headlessui/react";
 import { PlusCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 import { useCreateAccountModelContext } from "~context/CreateAccountModal";
 import { classNames } from "~utils";
@@ -10,7 +10,14 @@ interface TypeOfAccount {
   description: string;
 }
 
-const typesOfAccount = [
+interface StoreInformation {
+  name: string;
+  account: string;
+  username: string;
+  password: string;
+}
+
+const typesOfAccount: TypeOfAccount[] = [
   {
     name: "Root Account" as const,
     description:
@@ -20,12 +27,42 @@ const typesOfAccount = [
     name: "IAM Account" as const,
     description: "User within an account that performs daily tasks." as const,
   },
-] as const;
+];
 
 export default function CreateAccount() {
   const [modalIsOpen, setModalIsOpen] = useCreateAccountModelContext();
   const [typeOfAccount, setTypeOfAccount] = useState<TypeOfAccount>(
     typesOfAccount[0],
+  );
+
+  const [storeInformation, setStoreInformation] = useState<StoreInformation>({
+    name: "",
+    account: "",
+    username: "",
+    password: "",
+  });
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setStoreInformation((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  useEffect(
+    function () {
+      // if modal is closed, reset the store information
+      if (modalIsOpen === false) {
+        setStoreInformation({
+          name: "",
+          account: "",
+          username: "",
+          password: "",
+        });
+      }
+    },
+    [modalIsOpen],
   );
 
   return (
@@ -65,6 +102,7 @@ export default function CreateAccount() {
                     <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
                 </div>
+                {/* Top Info */}
                 <div className="sm:flex sm:items-start">
                   <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 sm:mx-0 sm:h-10 sm:w-10">
                     <PlusCircleIcon
@@ -103,8 +141,10 @@ export default function CreateAccount() {
                       name="name"
                       id="name"
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      placeholder="you@example.com"
+                      placeholder="My Favourite Account!"
                       aria-describedby="name-description"
+                      value={storeInformation.name}
+                      onChange={handleInputChange}
                     />
                   </div>
                   <p
@@ -206,12 +246,16 @@ export default function CreateAccount() {
                   </label>
                   <div className="mt-2">
                     <input
-                      type="text"
+                      type={
+                        typeOfAccount.name === "Root Account" ? "email" : "text"
+                      }
                       name="username"
                       id="username"
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       placeholder=""
                       aria-describedby="username-description"
+                      value={storeInformation.username}
+                      onChange={handleInputChange}
                     />
                   </div>
                 </div>
@@ -231,6 +275,8 @@ export default function CreateAccount() {
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       placeholder=""
                       aria-describedby="password-description"
+                      value={storeInformation.password}
+                      onChange={handleInputChange}
                     />
                   </div>
                 </div>
@@ -251,6 +297,8 @@ export default function CreateAccount() {
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         placeholder="123456789012 or alias"
                         aria-describedby="account-description"
+                        value={storeInformation.account}
+                        onChange={handleInputChange}
                       />
                     </div>
                   </div>
