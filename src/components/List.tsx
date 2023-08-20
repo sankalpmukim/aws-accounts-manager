@@ -49,7 +49,7 @@ const projects = [
 
 export default function List() {
   return (
-    <ul role="list" className="divide-y divide-gray-100 w-[400px] h-96">
+    <ul role="list" className="h-96 w-[400px] divide-y divide-gray-100">
       {projects.map((project) => (
         <li
           key={project.id}
@@ -77,7 +77,7 @@ export default function List() {
             </div>
           </div>
           <div className="flex flex-none items-center gap-x-4">
-            <button className="flex gap-1 items-center justify-center rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+            <button className="flex items-center justify-center gap-1 rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
               <PlusCircleIcon className="h-5 w-5" aria-hidden="true" />
               {`Autofill`}
               <span className="sr-only">, {project.name}</span>
@@ -107,11 +107,11 @@ export default function List() {
                       <button
                         className={classNames(
                           active ? "bg-gray-50" : "",
-                          "flex gap-1 px-3 py-1 text-sm leading-6 text-gray-900 w-full text-left",
+                          "flex w-full gap-1 px-3 py-1 text-left text-sm leading-6 text-gray-900",
                         )}
                       >
                         <PencilIcon
-                          className="mr-2 h-4 w-4 text-gray-400 -mb-1 mt-1"
+                          className="-mb-1 mr-2 mt-1 h-4 w-4 text-gray-400"
                           aria-hidden="true"
                         />
                         Edit<span className="sr-only">, {project.name}</span>
@@ -123,11 +123,11 @@ export default function List() {
                       <button
                         className={classNames(
                           active ? "bg-gray-50" : "",
-                          "flex gap-1 px-3 py-1 text-sm leading-6 text-gray-900 w-full text-left",
+                          "flex w-full gap-1 px-3 py-1 text-left text-sm leading-6 text-gray-900",
                         )}
                       >
                         <ArrowUpIcon
-                          className="mr-2 h-4 w-4 text-gray-400 -mb-1 mt-1"
+                          className="-mb-1 mr-2 mt-1 h-4 w-4 text-gray-400"
                           aria-hidden="true"
                         />
                         Move up
@@ -139,11 +139,11 @@ export default function List() {
                       <button
                         className={classNames(
                           active ? "bg-gray-50" : "",
-                          "flex gap-1 px-3 py-1 text-sm leading-6 text-gray-900 w-full text-left",
+                          "flex w-full gap-1 px-3 py-1 text-left text-sm leading-6 text-gray-900",
                         )}
                       >
                         <ArrowDownIcon
-                          className="mr-2 h-4 w-4 text-gray-400 -mb-1 mt-1"
+                          className="-mb-1 mr-2 mt-1 h-4 w-4 text-gray-400"
                           aria-hidden="true"
                         />
                         Move down
@@ -155,11 +155,11 @@ export default function List() {
                       <button
                         className={classNames(
                           active ? "bg-gray-50" : "",
-                          "flex gap-1 px-3 py-1 text-sm leading-6 text-gray-900 w-full text-left",
+                          "flex w-full gap-1 px-3 py-1 text-left text-sm leading-6 text-gray-900",
                         )}
                       >
                         <TrashIcon
-                          className="mr-2 h-4 w-4 text-gray-400 -mb-1 mt-1"
+                          className="-mb-1 mr-2 mt-1 h-4 w-4 text-gray-400"
                           aria-hidden="true"
                         />
                         Delete<span className="sr-only">, {project.name}</span>

@@ -1,16 +1,23 @@
+import { useStorage } from "@plasmohq/storage/hook";
+
 import CreateAccount from "~components/CreateAccount";
 import List from "~components/List";
 import {
   CreateAccountModalProvider,
   useOpenCreateAccountModal,
 } from "~context/CreateAccountModal";
+import { STORAGE_KEY, type StorageAccountType } from "~features/storage";
 
 import "~style.css";
 
 function Popup() {
   const openAddAccountModal = useOpenCreateAccountModal();
+  const [accounts, setAccounts] = useStorage<StorageAccountType[]>(
+    STORAGE_KEY,
+    [],
+  );
   return (
-    <div className="m-3 border-2 rounded-lg px-3">
+    <div className="m-3 rounded-lg border-2 px-3">
       <div className="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
         <div className="-ml-4 -mt-4 flex flex-wrap items-center justify-between sm:flex-nowrap">
           <div className="ml-4 mt-4">

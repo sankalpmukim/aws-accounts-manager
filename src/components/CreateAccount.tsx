@@ -3,18 +3,12 @@ import { PlusCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Fragment, useEffect, useState } from "react";
 
 import { useCreateAccountModelContext } from "~context/CreateAccountModal";
+import { type StoreInformation } from "~features/storage";
 import { classNames } from "~utils";
 
 interface TypeOfAccount {
   name: "Root Account" | "IAM Account";
   description: string;
-}
-
-interface StoreInformation {
-  name: string;
-  account: string;
-  username: string;
-  password: string;
 }
 
 const typesOfAccount: TypeOfAccount[] = [
@@ -192,16 +186,16 @@ export default function CreateAccount() {
                               <span
                                 className={classNames(
                                   checked
-                                    ? "bg-indigo-600 border-transparent"
-                                    : "bg-white border-gray-300",
+                                    ? "border-transparent bg-indigo-600"
+                                    : "border-gray-300 bg-white",
                                   active
-                                    ? "ring-2 ring-offset-2 ring-indigo-600"
+                                    ? "ring-2 ring-indigo-600 ring-offset-2"
                                     : "",
-                                  "mt-0.5 h-4 w-4 shrink-0 cursor-pointer rounded-full border flex items-center justify-center",
+                                  "mt-0.5 flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center rounded-full border",
                                 )}
                                 aria-hidden="true"
                               >
-                                <span className="rounded-full bg-white w-1.5 h-1.5" />
+                                <span className="h-1.5 w-1.5 rounded-full bg-white" />
                               </span>
                               <span className="ml-3 flex flex-col">
                                 <RadioGroup.Label
