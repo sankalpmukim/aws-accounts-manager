@@ -170,6 +170,12 @@ export default function List() {
                           active ? "bg-gray-50" : "",
                           "flex w-full gap-1 px-3 py-1 text-left text-sm leading-6 text-gray-900",
                         )}
+                        onClick={() => {
+                          const newAccounts = [...accounts];
+                          newAccounts.splice(index, 1);
+
+                          setAccounts(newAccounts);
+                        }}
                       >
                         <TrashIcon
                           className="-mb-1 mr-2 mt-1 h-4 w-4 text-gray-400"
