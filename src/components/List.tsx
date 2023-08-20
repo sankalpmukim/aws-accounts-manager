@@ -11,6 +11,7 @@ import { Fragment } from "react";
 
 import { useStorage } from "@plasmohq/storage/hook";
 
+import { useOpenEditAccountModal } from "~context/EditAccountModal";
 import { STORAGE_KEY, type StorageAccountType } from "~features/storage";
 import { classNames } from "~utils";
 
@@ -19,42 +20,15 @@ import { classNames } from "~utils";
 //   "In progress": "text-gray-600 bg-gray-50 ring-gray-500/10",
 //   Archived: "text-yellow-800 bg-yellow-50 ring-yellow-600/20",
 // };
-const projects = [
-  {
-    id: 1,
-    name: "My personal account",
-    status: "Complete",
-    lastUpdatedOn: "Leslie Alexander",
-    lastUsedOn: "March 17, 2023",
-  },
-  {
-    id: 2,
-    name: "Main Company account",
-    status: "In progress",
-    lastUpdatedOn: "Leslie Alexander",
-    lastUsedOn: "May 5, 2023",
-  },
-  {
-    id: 3,
-    name: "Freelance project",
-    status: "In progress",
-    lastUpdatedOn: "Courtney Henry",
-    lastUsedOn: "May 25, 2023",
-  },
-  {
-    id: 4,
-    name: "Billings portal",
-    status: "Archived",
-    lastUpdatedOn: "Leonard Krasner",
-    lastUsedOn: "June 7, 2023",
-  },
-];
 
 export default function List() {
   const [accounts, setAccounts] = useStorage<StorageAccountType[]>(
     STORAGE_KEY,
     [],
   );
+  console.log(accounts);
+
+  const editVal = useOpenEditAccountModal();
 
   return (
     <ul role="list" className="h-96 w-[400px] divide-y divide-gray-100">
@@ -122,6 +96,9 @@ export default function List() {
                           active ? "bg-gray-50" : "",
                           "flex w-full gap-1 px-3 py-1 text-left text-sm leading-6 text-gray-900",
                         )}
+                        onClick={() => {
+                          editVal({ ...account, index });
+                        }}
                       >
                         <PencilIcon
                           className="-mb-1 mr-2 mt-1 h-4 w-4 text-gray-400"

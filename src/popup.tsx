@@ -1,12 +1,11 @@
-import { useStorage } from "@plasmohq/storage/hook";
-
 import CreateAccount from "~components/CreateAccount";
+import EditAccount from "~components/EditAccount";
 import List from "~components/List";
 import {
   CreateAccountModalProvider,
   useOpenCreateAccountModal,
 } from "~context/CreateAccountModal";
-import { STORAGE_KEY, type StorageAccountType } from "~features/storage";
+import { EditAccountModalProvider } from "~context/EditAccountModal";
 
 import "~style.css";
 
@@ -44,8 +43,11 @@ function Popup() {
 function IndexPopup() {
   return (
     <CreateAccountModalProvider>
-      <Popup />
-      <CreateAccount />
+      <EditAccountModalProvider>
+        <Popup />
+        <CreateAccount />
+        <EditAccount />
+      </EditAccountModalProvider>
     </CreateAccountModalProvider>
   );
 }
