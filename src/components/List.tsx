@@ -27,7 +27,6 @@ export default function List() {
     [],
   );
   console.log(accounts);
-
   const editVal = useOpenEditAccountModal();
 
   return (
@@ -115,6 +114,18 @@ export default function List() {
                           active ? "bg-gray-50" : "",
                           "flex w-full gap-1 px-3 py-1 text-left text-sm leading-6 text-gray-900",
                         )}
+                        onClick={() => {
+                          // if index is 0, do nothing
+                          if (index === 0) return;
+                          // else, swap with previous
+                          const newAccounts = [...accounts];
+                          const temp = newAccounts[index - 1];
+                          newAccounts[index - 1] = newAccounts[index];
+                          newAccounts[index] = temp;
+                          // handleMove(index, index - 1);
+
+                          setAccounts(newAccounts);
+                        }}
                       >
                         <ArrowUpIcon
                           className="-mb-1 mr-2 mt-1 h-4 w-4 text-gray-400"
@@ -131,6 +142,18 @@ export default function List() {
                           active ? "bg-gray-50" : "",
                           "flex w-full gap-1 px-3 py-1 text-left text-sm leading-6 text-gray-900",
                         )}
+                        onClick={() => {
+                          // if index is last, do nothing
+                          if (index === accounts.length - 1) return;
+                          // else, swap with next
+                          const newAccounts = [...accounts];
+                          const temp = newAccounts[index + 1];
+                          newAccounts[index + 1] = newAccounts[index];
+                          newAccounts[index] = temp;
+                          // handleMove(index, index + 1);
+
+                          setAccounts(newAccounts);
+                        }}
                       >
                         <ArrowDownIcon
                           className="-mb-1 mr-2 mt-1 h-4 w-4 text-gray-400"
