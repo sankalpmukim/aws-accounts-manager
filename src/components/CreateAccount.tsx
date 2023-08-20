@@ -2,8 +2,14 @@ import { Dialog, RadioGroup, Transition } from "@headlessui/react";
 import { PlusCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Fragment, useEffect, useState } from "react";
 
+import { useStorage } from "@plasmohq/storage/hook";
+
 import { useCreateAccountModelContext } from "~context/CreateAccountModal";
-import { type StoreInformation } from "~features/storage";
+import {
+  STORAGE_KEY,
+  type StorageAccountType,
+  type StoreInformation,
+} from "~features/storage";
 import { classNames } from "~utils";
 
 interface TypeOfAccount {
@@ -35,6 +41,8 @@ export default function CreateAccount() {
     username: "",
     password: "",
   });
+
+  const setStorage = useStorage<StorageAccountType[]>(STORAGE_KEY, [])[1];
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -86,7 +94,7 @@ export default function CreateAccount() {
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
-                <div className="absolute right-0 top-0 hidden pr-4 pt-4 sm:block">
+                <div className="absolute right-0 top-0 pr-4 pt-4">
                   <button
                     type="button"
                     className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
@@ -301,7 +309,71 @@ export default function CreateAccount() {
                   <button
                     type="button"
                     className="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:ml-3 sm:w-auto"
-                    onClick={() => setModalIsOpen(false)}
+                    onClick={() => {
+                      // validate input
+
+                      // name should be >3 characters
+                      if (storeInformation.name.length < 3) {
+                        alert("Name should be at least 3 characters long.");
+                        return;
+                      }
+
+                      // if type of account is IAM, account should be 12 digits or contain more than 3 alphabets
+                      if (typeOfAccount.name === "IAM Account") {
+                        // if it doesn't contain any alphabets, it should be 12 digits
+                        if (
+                          !storeInformation.account.match(/[a-z]/i) &&
+                          storeInformation.account.length !== 12
+                        ) {
+                          alert(
+                            "Account should be 12 digits or contain more than 3 alphabets.",
+                          );
+                          return;
+                        }
+
+                        // check username similarly
+                        if (storeInformation.username.length < 3) {
+                          alert(
+                            "Username should be at least 3 characters long.",
+                          );
+                          return;
+                        }
+                      } else {
+                        // if type of account is Root, username should be an email address, check
+                        if (
+                          !storeInformation.username.match(
+                            /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g,
+                          )
+                        ) {
+                          alert("Please provide a valid email address.");
+                          return;
+                        }
+                      }
+
+                      // if password is less than 8 characters, alert
+                      if (storeInformation.password.length < 8) {
+                        alert("Password should be at least 8 characters long.");
+                        return;
+                      }
+
+                      // save to storage
+                      setStorage((prevState) => [
+                        ...prevState,
+                        {
+                          name: storeInformation.name,
+                          account:
+                            typeOfAccount.name === "Root Account"
+                              ? ``
+                              : storeInformation.account,
+                          username: storeInformation.username,
+                          password: storeInformation.password,
+                          dateOfLastUsage: null, // new Date().toISOString(),
+                        },
+                      ]);
+
+                      // close modal
+                      setModalIsOpen(false);
+                    }}
                   >
                     {`Add account`}
                   </button>

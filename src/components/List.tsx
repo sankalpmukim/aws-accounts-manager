@@ -9,6 +9,9 @@ import {
 } from "@heroicons/react/20/solid";
 import { Fragment } from "react";
 
+import { useStorage } from "@plasmohq/storage/hook";
+
+import { STORAGE_KEY, type StorageAccountType } from "~features/storage";
 import { classNames } from "~utils";
 
 // const statuses = {
@@ -48,17 +51,23 @@ const projects = [
 ];
 
 export default function List() {
+  const [accounts, setAccounts] = useStorage<StorageAccountType[]>(
+    STORAGE_KEY,
+    [],
+  );
+
   return (
     <ul role="list" className="h-96 w-[400px] divide-y divide-gray-100">
-      {projects.map((project) => (
+      {/* {JSON.stringify(accounts, null, 2)} */}
+      {accounts.map((account, index) => (
         <li
-          key={project.id}
+          key={index}
           className="flex items-center justify-between gap-x-6 py-5"
         >
           <div className="min-w-0">
             <div className="flex items-start gap-x-3">
               <p className="text-sm font-semibold leading-6 text-gray-900">
-                {project.name}
+                {account.name}
               </p>
               {/* <p
                 className={classNames(
@@ -69,18 +78,22 @@ export default function List() {
               </p> */}
             </div>
             <div className="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500">
-              <p className="whitespace-nowrap">{project.lastUsedOn}</p>
+              <p className="whitespace-nowrap">
+                {account.dateOfLastUsage ?? `Not used yet`}
+              </p>
               <svg viewBox="0 0 2 2" className="h-0.5 w-0.5 fill-current">
                 <circle cx={1} cy={1} r={1} />
               </svg>
-              <p className="truncate">{project.lastUpdatedOn}</p>
+              <p className="truncate">
+                {account.account !== "" ? account.account : account.username}
+              </p>
             </div>
           </div>
           <div className="flex flex-none items-center gap-x-4">
             <button className="flex items-center justify-center gap-1 rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
               <PlusCircleIcon className="h-5 w-5" aria-hidden="true" />
               {`Autofill`}
-              <span className="sr-only">, {project.name}</span>
+              <span className="sr-only">, {account.name}</span>
             </button>
             {/* Smaller substitue for autofill button */}
             {/* <button className="-m-2.5 block p-2.5 text-gray-500 hover:text-gray-900">
@@ -114,7 +127,7 @@ export default function List() {
                           className="-mb-1 mr-2 mt-1 h-4 w-4 text-gray-400"
                           aria-hidden="true"
                         />
-                        Edit<span className="sr-only">, {project.name}</span>
+                        Edit<span className="sr-only">, {account.name}</span>
                       </button>
                     )}
                   </Menu.Item>
@@ -162,7 +175,7 @@ export default function List() {
                           className="-mb-1 mr-2 mt-1 h-4 w-4 text-gray-400"
                           aria-hidden="true"
                         />
-                        Delete<span className="sr-only">, {project.name}</span>
+                        Delete<span className="sr-only">, {account.name}</span>
                       </button>
                     )}
                   </Menu.Item>

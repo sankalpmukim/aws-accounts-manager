@@ -12,10 +12,7 @@ import "~style.css";
 
 function Popup() {
   const openAddAccountModal = useOpenCreateAccountModal();
-  const [accounts, setAccounts] = useStorage<StorageAccountType[]>(
-    STORAGE_KEY,
-    [],
-  );
+
   return (
     <div className="m-3 rounded-lg border-2 px-3">
       <div className="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
