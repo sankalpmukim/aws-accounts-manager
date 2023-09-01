@@ -6,11 +6,20 @@ import {
   useOpenCreateAccountModal,
 } from "~context/CreateAccountModal";
 import { EditAccountModalProvider } from "~context/EditAccountModal";
+import { useWhichPage } from "~hooks/useWhichPage";
 
 import "~style.css";
 
+const SHOW_STATUS = {
+  unknown: "Currently not on AWS signin page.",
+  "aws-signin-initial": "Currently on AWS signin page.",
+  "aws-signin-root": "Currently on AWS root login screen.",
+  "aws-signin-iam": "Currently on AWS IAM login screen.",
+} as const;
+
 function Popup() {
   const openAddAccountModal = useOpenCreateAccountModal();
+  const [page, loading] = useWhichPage();
 
   return (
     <div className="m-3 rounded-lg border-2 px-3">
@@ -21,7 +30,9 @@ function Popup() {
               {`AWS Accounts Manager`}
             </h3>
             <p className="mt-1 text-sm text-gray-500">
-              {`Currently not on AWS signin page.`}
+              {`${SHOW_STATUS[page] ?? SHOW_STATUS["unknown"]}${
+                loading ? ", Loading..." : ""
+              }`}
             </p>
           </div>
           <div className="ml-4 mt-4 flex-shrink-0">

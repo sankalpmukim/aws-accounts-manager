@@ -26,7 +26,7 @@ export default function List() {
     STORAGE_KEY,
     [],
   );
-  console.log(accounts);
+  // console.log(accounts);
   const editVal = useOpenEditAccountModal();
 
   return (

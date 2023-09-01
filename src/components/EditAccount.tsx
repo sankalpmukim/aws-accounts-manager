@@ -69,7 +69,7 @@ export default function EditAccount() {
     }
   }, [editModalInfo]);
 
-  console.log(editModalInfo, storeInformation);
+  // console.log(editModalInfo, storeInformation);
   const setStorage = useStorage<StorageAccountType[]>(STORAGE_KEY, [])[1];
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -400,11 +400,11 @@ export default function EditAccount() {
                       // save to storage
                       setStorage((prevState) => {
                         const newState = [...prevState];
-                        console.log("prevState", prevState);
+                        // console.log("prevState", prevState);
                         newState[editModalInfo.index] = {
                           ...storeInformation,
                         };
-                        console.log("newState", newState);
+                        // console.log("newState", newState);
 
                         return newState;
                       });
