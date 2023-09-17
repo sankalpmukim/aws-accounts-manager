@@ -5,7 +5,7 @@
   "description": "A simple and secure Open Source Client Side AWS Accounts Manager! A Freelancer's dream",
   "author": "Sankalp Mukim <sankalpmukim@gmail.com>",
   "scripts": {
-    "dev": "plasmo dev",
+    "dev": "plasmo dev --target=firefox-mv2",
     "build": "plasmo build",
     "package": "plasmo package"
   },
@@ -40,6 +40,11 @@
       "storage",
       "activeTab",
       "scripting"
-    ]
+    ],
+    "browser_specific_settings": {
+      "gecko": {
+        "id": "$FIREFOX_EXT_ID"
+      }
+    }
   }
 }
