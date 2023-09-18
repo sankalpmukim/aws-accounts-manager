@@ -23,7 +23,20 @@ export interface FillLoginRequestData {
 
 export type FillLoginRequest = {
   name: string; // fillLogin
-  data: FillLoginRequestData;
+  body: FillLoginRequestData;
 };
 
 export type FillLoginResponse = (response: { success: boolean }) => void;
+
+export const PAGE_TYPES = {
+  AWS_SIGNIN_INITIAL: "aws-signin-initial",
+  AWS_SIGNIN_ROOT: "aws-signin-root",
+  AWS_SIGNIN_IAM: "aws-signin-iam",
+  AWS_CONSOLE: "aws-console",
+  UNKNOWN: "unknown",
+} as const;
+
+export const SIGNIN_PAGE_TYPES = {
+  IAM_SIGNIN: "iam-signin",
+  ROOT_SIGNIN: "root-signin",
+} as const;

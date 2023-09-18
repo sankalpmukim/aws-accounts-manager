@@ -13,6 +13,7 @@ import { useStorage } from "@plasmohq/storage/hook";
 
 import { useOpenEditAccountModal } from "~context/EditAccountModal";
 import { STORAGE_KEY, type StorageAccountType } from "~features/storage";
+import { useAutoFill } from "~hooks/useAutoFill";
 import { classNames } from "~utils";
 
 // const statuses = {
@@ -26,8 +27,8 @@ export default function List() {
     STORAGE_KEY,
     [],
   );
-  // console.log(accounts);
   const editVal = useOpenEditAccountModal();
+  const autoFillAccount = useAutoFill();
 
   return (
     <ul role="list" className="h-96 w-[400px] divide-y divide-gray-100">
@@ -63,7 +64,16 @@ export default function List() {
             </div>
           </div>
           <div className="flex flex-none items-center gap-x-4">
-            <button className="flex items-center justify-center gap-1 rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+            <button
+              className="flex items-center justify-center gap-1 rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+              onClick={() => {
+                autoFillAccount({
+                  account: account.account === "" ? null : account.account,
+                  username: account.username,
+                  password: account.password,
+                });
+              }}
+            >
               <PlusCircleIcon className="h-5 w-5" aria-hidden="true" />
               {`Autofill`}
               <span className="sr-only">, {account.name}</span>
