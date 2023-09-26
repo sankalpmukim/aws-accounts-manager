@@ -5,8 +5,12 @@
   "description": "A simple and secure Open Source Client Side AWS Accounts Manager! A Freelancer's dream",
   "author": "Sankalp Mukim <sankalpmukim@gmail.com>",
   "scripts": {
-    "dev": "plasmo dev --target=firefox-mv2",
+    "dev": "plasmo dev",
+    "dev:firefox": "plasmo dev --target=firefox-mv2",
+    "dev:chrome": "plasmo dev --target=chrome-mv3",
     "build": "plasmo build",
+    "build:firefox": "plasmo build --target=firefox-mv2 --zip",
+    "build:chrome": "plasmo build --target=chrome-mv3 --zip",
     "package": "plasmo package"
   },
   "dependencies": {
