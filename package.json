@@ -37,10 +37,9 @@
   },
   "manifest": {
     "host_permissions": [
-      "https://*/*"
+      "*://*.aws.amazon.com/*"
     ],
     "permissions": [
-      "tabs",
       "storage",
       "activeTab",
       "scripting"

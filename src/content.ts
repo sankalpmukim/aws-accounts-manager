@@ -15,7 +15,7 @@ import {
 console.log("Content script loaded.");
 
 export const config: PlasmoCSConfig = {
-  matches: ["<all_urls>"],
+  matches: ["*://*.aws.amazon.com/*"],
   run_at: "document_idle",
 };
 
