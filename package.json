@@ -40,9 +40,7 @@
       "*://*.aws.amazon.com/*"
     ],
     "permissions": [
-      "storage",
-      "activeTab",
-      "scripting"
+      "storage"
     ],
     "browser_specific_settings": {
       "gecko": {
