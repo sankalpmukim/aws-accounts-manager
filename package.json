@@ -8,9 +8,11 @@
     "dev": "plasmo dev",
     "dev:firefox": "plasmo dev --target=firefox-mv2",
     "dev:chrome": "plasmo dev --target=chrome-mv3",
+    "dev:edge": "plasmo dev --target=edge-mv3",
     "build": "plasmo build",
     "build:firefox": "plasmo build --target=firefox-mv2 --zip",
     "build:chrome": "plasmo build --target=chrome-mv3 --zip",
+    "build:edge": "plasmo build --target=edge-mv3 --zip",
     "package": "plasmo package"
   },
   "dependencies": {
