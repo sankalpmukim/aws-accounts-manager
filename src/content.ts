@@ -28,7 +28,23 @@ const isElementVisible = (element: HTMLElement): boolean => {
   );
 };
 
+function simulateClearing(element: HTMLInputElement) {
+  // Clear the field
+  element.value = "";
+
+  // Create and dispatch the event
+  let event = new Event("input", {
+    bubbles: true,
+    cancelable: true,
+  });
+
+  element.dispatchEvent(event);
+}
+
 function simulateTyping(element: HTMLInputElement, value: string) {
+  // Clear the field first
+  simulateClearing(element);
+  // Type the value
   for (let char of value) {
     element.value += char;
 

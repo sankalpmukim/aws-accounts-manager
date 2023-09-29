@@ -1,7 +1,7 @@
 {
   "name": "aws-accounts-manager",
-  "displayName": "Aws accounts manager",
-  "version": "0.0.1",
+  "displayName": "AWS Accounts Manager",
+  "version": "0.0.2",
   "description": "A simple and secure Open Source Client Side AWS Accounts Manager! A Freelancer's dream",
   "author": "Sankalp Mukim <sankalpmukim@gmail.com>",
   "scripts": {
@@ -9,7 +9,7 @@
     "dev:firefox": "plasmo dev --target=firefox-mv2",
     "dev:chrome": "plasmo dev --target=chrome-mv3",
     "dev:edge": "plasmo dev --target=edge-mv3",
-    "build": "plasmo build",
+    "build": "pnpm build:chrome && pnpm build:edge",
     "build:firefox": "plasmo build --target=firefox-mv2 --zip",
     "build:chrome": "plasmo build --target=chrome-mv3 --zip",
     "build:edge": "plasmo build --target=edge-mv3 --zip",
