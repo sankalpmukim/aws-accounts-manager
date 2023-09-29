@@ -1,6 +1,6 @@
 {
   "name": "aws-accounts-manager",
-  "displayName": "Aws accounts manager",
+  "displayName": "AWS Accounts Manager",
   "version": "0.0.1",
   "description": "A simple and secure Open Source Client Side AWS Accounts Manager! A Freelancer's dream",
   "author": "Sankalp Mukim <sankalpmukim@gmail.com>",
