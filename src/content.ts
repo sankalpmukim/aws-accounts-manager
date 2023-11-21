@@ -29,31 +29,40 @@ const isElementVisible = (element: HTMLElement): boolean => {
 };
 
 function simulateClearing(element: HTMLInputElement) {
-  // Clear the field
+  // Set the value of the element to an empty string
   element.value = "";
 
-  // Create and dispatch the event
-  let event = new Event("input", {
+  // Create and dispatch an input event
+  let event = new InputEvent("input", {
     bubbles: true,
     cancelable: true,
+    data: "", // Data is an empty string as the field is cleared
+    inputType: "deleteContentBackward", // Input type representing clearing action
   });
 
+  // Dispatch the event
   element.dispatchEvent(event);
 }
 
 function simulateTyping(element: HTMLInputElement, value: string) {
   // Clear the field first
   simulateClearing(element);
+
   // Type the value
   for (let char of value) {
     element.value += char;
 
     // Create and dispatch the event
-    let event = new Event("input", {
+    // Use InputEvent instead of Event
+    let event = new InputEvent("input", {
       bubbles: true,
       cancelable: true,
+      data: char, // Set data to the current character
+      inputType: "insertText", // Use "insertText" instead of "insertReplacementText"
+      isComposing: false, // Explicitly set isComposing to false
     });
 
+    // Dispatch the event
     element.dispatchEvent(event);
   }
 }
