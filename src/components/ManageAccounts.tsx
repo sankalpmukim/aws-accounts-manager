@@ -90,13 +90,26 @@ export default function ManageAccounts() {
                   >
                     {`Export a CSV`}
                   </button>
-                  <button
-                    type="button"
-                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                    onClick={() => console.log(`Clear all accounts`)}
-                  >
-                    {`Import a CSV`}
-                  </button>
+                  <label className="mt-3 inline-flex w-full cursor-pointer justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">
+                    Import File
+                    <input
+                      type="file"
+                      className="absolute h-0 w-0 opacity-0"
+                      accept=".csv, text/csv"
+                      onChange={function (event) {
+                        const files = event.target.files;
+                        if (files.length === 0) {
+                          return;
+                        }
+                        const file = files[0];
+                        const reader = new FileReader();
+                        reader.onload = function (event) {
+                          console.log(`read results**`, event.target.result);
+                        };
+                        reader.readAsText(file);
+                      }}
+                    />
+                  </label>
                   <button
                     type="button"
                     className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
