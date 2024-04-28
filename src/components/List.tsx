@@ -31,7 +31,7 @@ export default function List() {
   const autoFillAccount = useAutoFill();
 
   return (
-    <ul role="list" className="h-96 w-[400px] divide-y divide-gray-100">
+    <ul role="list" className="h-96 w-[400px] divide-y divide-gray-100 p-3">
       {/* {JSON.stringify(accounts, null, 2)} */}
       {accounts.map((account, index) => (
         <li
