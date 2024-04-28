@@ -7,6 +7,7 @@ import {
   PlusCircleIcon,
   TrashIcon,
 } from "@heroicons/react/20/solid";
+import moment from "moment";
 import { Fragment } from "react";
 
 import { useStorage } from "@plasmohq/storage/hook";
@@ -30,6 +31,11 @@ export default function List() {
   const editVal = useOpenEditAccountModal();
   const autoFillAccount = useAutoFill();
 
+  function updateLastUsed(index: number) {
+    const newAccounts = [...accounts];
+    newAccounts[index].dateOfLastUsage = new Date().toISOString();
+    setAccounts(newAccounts);
+  }
   return (
     <ul
       role="list"
@@ -55,7 +61,9 @@ export default function List() {
             </div>
             <div className="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500">
               <p className="whitespace-nowrap">
-                {account.dateOfLastUsage ?? `Not used yet`}
+                {!account.dateOfLastUsage
+                  ? `Not used yet`
+                  : `Used ${moment(account.dateOfLastUsage).fromNow()}`}
               </p>
               <svg viewBox="0 0 2 2" className="h-0.5 w-0.5 fill-current">
                 <circle cx={1} cy={1} r={1} />
@@ -74,6 +82,7 @@ export default function List() {
                   username: account.username,
                   password: account.password,
                 });
+                updateLastUsed(index);
               }}
             >
               <PlusCircleIcon className="h-5 w-5" aria-hidden="true" />
