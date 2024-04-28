@@ -12,11 +12,15 @@ import { STORAGE_KEY, type StorageAccountType } from "../features/storage";
 import {
   accountsArrayToCsvContent,
   downloadFile,
+  readCsvFileStringToStorage,
 } from "../utils/file-handling";
 
 export default function ManageAccounts() {
   const [modalIsOpen, setModalIsOpen] = useManageAccountsModelContext();
-  const [accounts] = useStorage<StorageAccountType[]>(STORAGE_KEY, []);
+  const [accounts, setAccounts] = useStorage<StorageAccountType[]>(
+    STORAGE_KEY,
+    [],
+  );
   console.log(modalIsOpen, "accounts", accounts);
   return (
     <Transition.Root show={modalIsOpen} as={Fragment}>
@@ -104,7 +108,17 @@ export default function ManageAccounts() {
                         const file = files[0];
                         const reader = new FileReader();
                         reader.onload = function (event) {
-                          console.log(`read results**`, event.target.result);
+                          console.log(
+                            `read results**`,
+                            event.target.result.toString(),
+                          );
+                          const newAccounts = readCsvFileStringToStorage(
+                            event.target.result.toString(),
+                          );
+                          setAccounts((oldAccounts) => [
+                            ...oldAccounts,
+                            ...newAccounts,
+                          ]);
                         };
                         reader.readAsText(file);
                       }}
