@@ -10,6 +10,7 @@ import { useWhichPage } from "~hooks/useWhichPage";
 
 import "~style.css";
 
+import ManageAccounts from "./components/ManageAccounts";
 import {
   ManageAccountsModalProvider,
   useOpenManageAccountsModal,
@@ -71,6 +72,7 @@ function IndexPopup() {
           <Popup />
           <CreateAccount />
           <EditAccount />
+          <ManageAccounts />
         </ManageAccountsModalProvider>
       </EditAccountModalProvider>
     </CreateAccountModalProvider>
