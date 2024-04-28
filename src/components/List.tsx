@@ -31,8 +31,10 @@ export default function List() {
   const autoFillAccount = useAutoFill();
 
   return (
-    <ul role="list" className="h-96 w-[400px] divide-y divide-gray-100 p-3">
-      {/* {JSON.stringify(accounts, null, 2)} */}
+    <ul
+      role="list"
+      className="h-96 w-[400px] divide-y divide-gray-100 overflow-y-scroll p-3"
+    >
       {accounts.map((account, index) => (
         <li
           key={index}
@@ -191,7 +193,8 @@ export default function List() {
                           className="-mb-1 mr-2 mt-1 h-4 w-4 text-gray-400"
                           aria-hidden="true"
                         />
-                        Delete<span className="sr-only">, {account.name}</span>
+                        Delete
+                        <span className="sr-only">, {account.name}</span>
                       </button>
                     )}
                   </Menu.Item>
