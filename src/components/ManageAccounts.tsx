@@ -5,11 +5,19 @@ import {
 } from "@heroicons/react/24/outline";
 import { Fragment, useState } from "react";
 
+import { useStorage } from "@plasmohq/storage/hook";
+
 import { useManageAccountsModelContext } from "../context/ManageAccountModal";
+import { STORAGE_KEY, type StorageAccountType } from "../features/storage";
+import {
+  accountsArrayToCsvContent,
+  downloadFile,
+} from "../utils/file-handling";
 
 export default function ManageAccounts() {
   const [modalIsOpen, setModalIsOpen] = useManageAccountsModelContext();
-  console.log(modalIsOpen);
+  const [accounts] = useStorage<StorageAccountType[]>(STORAGE_KEY, []);
+  console.log(modalIsOpen, "accounts", accounts);
   return (
     <Transition.Root show={modalIsOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={setModalIsOpen}>
@@ -74,7 +82,10 @@ export default function ManageAccounts() {
                     type="button"
                     className="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:ml-3 sm:w-auto"
                     onClick={() => {
-                      console.log(`Add account`);
+                      console.log(`Export accounts`);
+                      const csvContents = accountsArrayToCsvContent(accounts);
+                      console.log(csvContents);
+                      downloadFile(csvContents, `accounts.csv`, `text/csv`);
                     }}
                   >
                     {`Export a CSV`}
