@@ -42,6 +42,7 @@ In case you want to skip the Reading part lol, I built a browser extension. Plea
 - https://chromewebstore.google.com/detail/aws-accounts-manager/hkcpaihoknnbgfaehgcihpidbkhmfacj
 - https://microsoftedge.microsoft.com/addons/detail/aws-accounts-manager/fllabfdlhlbdafgfagdfccmcamahlpmm
 - https://addons.mozilla.org/en-US/firefox/addon/aws-accounts-manager/
+- https://github.com/sankalpmukim/aws-accounts-manager
 
 &#x200B;
 
