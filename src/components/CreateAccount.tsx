@@ -342,7 +342,7 @@ export default function CreateAccount() {
                         // if type of account is Root, username should be an email address, check
                         if (
                           !storeInformation.username.match(
-                            /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g,
+                            /^[\w\-\.\+]+@([\w-]+\.)+[\w-]{2,4}$/g,
                           )
                         ) {
                           alert("Please provide a valid email address.");
