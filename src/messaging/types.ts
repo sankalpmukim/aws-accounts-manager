@@ -2,6 +2,9 @@ export type Page =
   | "aws-signin-initial"
   | "aws-signin-root"
   | "aws-signin-iam"
+  | "aws-new-signin-initial"
+  | "aws-new-signin-root"
+  | "aws-new-signin-iam"
   | "aws-console"
   | "unknown";
 
@@ -32,6 +35,9 @@ export const PAGE_TYPES = {
   AWS_SIGNIN_INITIAL: "aws-signin-initial",
   AWS_SIGNIN_ROOT: "aws-signin-root",
   AWS_SIGNIN_IAM: "aws-signin-iam",
+  AWS_NEW_SIGNIN_INITIAL: "aws-new-signin-initial",
+  AWS_NEW_SIGNIN_ROOT: "aws-new-signin-root",
+  AWS_NEW_SIGNIN_IAM: "aws-new-signin-iam",
   AWS_CONSOLE: "aws-console",
   UNKNOWN: "unknown",
 } as const;

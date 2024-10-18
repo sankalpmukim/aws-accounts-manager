@@ -67,7 +67,41 @@ function simulateTyping(element: HTMLInputElement, value: string) {
   }
 }
 
+/**
+ * Check everywhere to see if the string exists in this page or not.
+ */
+function checkForSubstringInTags(substring: string, tag: string): boolean {
+  // Get all elements of the provided tag type on the page
+  const elements = document.querySelectorAll(tag);
+
+  // Iterate through each element and check for the provided substring
+  for (let i = 0; i < elements.length; i++) {
+    if (elements[i].textContent?.includes(substring)) {
+      return true; // Substring found
+    }
+  }
+
+  return false; // Substring not found
+}
+
 function getPageInfo(): Page {
+  // new ui checks
+  const isNextApp = document.getElementById("__next");
+  if (isNextApp !== null) {
+    if (checkForSubstringInTags("Access your AWS account by user type.", "p")) {
+      return PAGE_TYPES.AWS_NEW_SIGNIN_INITIAL;
+    }
+
+    if (checkForSubstringInTags("Enter the password for", "p")) {
+      return PAGE_TYPES.AWS_NEW_SIGNIN_ROOT;
+    }
+
+    if (checkForSubstringInTags("IAM username", "label")) {
+      return PAGE_TYPES.AWS_NEW_SIGNIN_IAM;
+    }
+  }
+
+  // old UI checks
   const loginContainer = document.getElementById("login_container");
   if (!loginContainer) {
     const accountFields = document.getElementById("accountFields");
