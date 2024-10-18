@@ -21,7 +21,6 @@ export default function ManageAccounts() {
     STORAGE_KEY,
     [],
   );
-  console.log(modalIsOpen, "accounts", accounts);
   return (
     <Transition.Root show={modalIsOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={setModalIsOpen}>
@@ -86,9 +85,7 @@ export default function ManageAccounts() {
                     type="button"
                     className="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:ml-3 sm:w-auto"
                     onClick={() => {
-                      console.log(`Export accounts`);
                       const csvContents = accountsArrayToCsvContent(accounts);
-                      console.log(csvContents);
                       downloadFile(csvContents, `accounts.csv`, `text/csv`);
                     }}
                   >
@@ -108,10 +105,6 @@ export default function ManageAccounts() {
                         const file = files[0];
                         const reader = new FileReader();
                         reader.onload = function (event) {
-                          console.log(
-                            `read results**`,
-                            event.target.result.toString(),
-                          );
                           const newAccounts = readCsvFileStringToStorage(
                             event.target.result.toString(),
                           );
