@@ -319,7 +319,11 @@ chrome.runtime.onMessage.addListener(function (
       const accountField = document.getElementById("account");
       const usernameField = document.getElementById("username");
       const passwordField = document.getElementById("password");
-      if (getPageInfo() === PAGE_TYPES.AWS_SIGNIN_IAM) {
+      const page = getPageInfo();
+      if (
+        page === PAGE_TYPES.AWS_SIGNIN_IAM ||
+        page === PAGE_TYPES.AWS_NEW_SIGNIN_IAM
+      ) {
         signInType = SIGNIN_PAGE_TYPES.IAM_SIGNIN;
         if (
           accountField &&
@@ -339,7 +343,10 @@ chrome.runtime.onMessage.addListener(function (
           console.error("Could not find login fields.");
           sendResponse({ success: false });
         }
-      } else if (getPageInfo() === PAGE_TYPES.AWS_SIGNIN_ROOT) {
+      } else if (
+        page === PAGE_TYPES.AWS_SIGNIN_ROOT ||
+        page === PAGE_TYPES.AWS_NEW_SIGNIN_ROOT
+      ) {
         signInType = SIGNIN_PAGE_TYPES.ROOT_SIGNIN;
         const passwordField = document.getElementById("password");
         if (passwordField && isInputElement(passwordField)) {
@@ -353,6 +360,8 @@ chrome.runtime.onMessage.addListener(function (
 
       setTimeout(() => {
         if (signInType === SIGNIN_PAGE_TYPES.IAM_SIGNIN) {
+          const btn = document.getElementById("signin_button");
+          btn.click();
           triggerAngularSignInClick();
         } else if (signInType === SIGNIN_PAGE_TYPES.ROOT_SIGNIN) {
           const btn = document.getElementById("signin_button");
