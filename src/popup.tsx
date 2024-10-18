@@ -10,6 +10,8 @@ import { useWhichPage } from "~hooks/useWhichPage";
 
 import "~style.css";
 
+import { PAGE_TYPES } from "~messaging/types";
+
 import ManageAccounts from "./components/ManageAccounts";
 import {
   ManageAccountsModalProvider,
@@ -18,9 +20,12 @@ import {
 
 const SHOW_STATUS = {
   unknown: "Currently not on AWS signin page.",
-  "aws-signin-initial": "Currently on AWS signin page.",
-  "aws-signin-root": "Currently on AWS root login screen.",
-  "aws-signin-iam": "Currently on AWS IAM login screen.",
+  [PAGE_TYPES.AWS_SIGNIN_INITIAL]: "Currently on AWS signin page.",
+  [PAGE_TYPES.AWS_SIGNIN_ROOT]: "Currently on AWS root login screen.",
+  [PAGE_TYPES.AWS_SIGNIN_IAM]: "Currently on AWS IAM login screen.",
+  [PAGE_TYPES.AWS_NEW_SIGNIN_INITIAL]: "Currently on AWS signin page.",
+  [PAGE_TYPES.AWS_NEW_SIGNIN_ROOT]: "Currently on AWS root login screen.",
+  [PAGE_TYPES.AWS_NEW_SIGNIN_IAM]: "Currently on AWS IAM login screen.",
 } as const;
 
 function Popup() {

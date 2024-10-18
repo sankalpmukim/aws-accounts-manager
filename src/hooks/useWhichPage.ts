@@ -34,6 +34,7 @@ export const useWhichPage = (): [Page, boolean] => {
       if (typeof response === "undefined") {
         console.warn("Content script did not respond.");
         console.log(chrome.runtime.lastError);
+        setLoading(false);
         return;
       }
       setPage(response.page);

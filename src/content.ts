@@ -246,6 +246,73 @@ chrome.runtime.onMessage.addListener(function (
         sendResponse({ success: false });
         return;
       }
+    } else if (page === PAGE_TYPES.AWS_NEW_SIGNIN_INITIAL) {
+      // user is on aws-signin-initial page
+      const resolvingInputToFill = !!request.body.account
+        ? request.body.account
+        : request.body.username;
+
+      console.log("resolvingInputToFill:", resolvingInputToFill);
+
+      const radios = document.querySelectorAll(`input[type="radio"]`);
+      console.log(radios.length);
+      if (request.body.account === "" || request.body.account === null) {
+        // select the root account radio button
+        radios.forEach((radio) => {
+          if (isRadioElement(radio) && radio.value === "ROOT") {
+            radio.checked = true;
+            radio.click(); // this one happened after 'i am god' level debugging and frontend knowledge'
+          } else if (isRadioElement(radio)) {
+            radio.checked = false;
+          } else {
+            console.error("Could not find radio buttons.");
+            sendResponse({ success: false });
+            return;
+          }
+        });
+      } else {
+        // select the iam account radio button
+        radios.forEach((radio) => {
+          console.log(`hit`);
+          if (isRadioElement(radio) && radio.value === "IAM") {
+            console.log(`hit1`);
+            radio.checked = true;
+            radio.click(); // this one happened after 'i am god' level debugging and frontend knowledge'
+          } else if (isRadioElement(radio)) {
+            console.log(`hit2`);
+            radio.checked = false;
+          } else {
+            console.log(`hit3`);
+            console.error("Could not find radio buttons.");
+            sendResponse({ success: false });
+            return;
+          }
+        });
+      }
+
+      // fill the input and then click "next" button
+      const resolvingInput = document.getElementById("resolving_input");
+      const nextButton = document.getElementById("next_button");
+
+      if (
+        typeof resolvingInput === "undefined" ||
+        typeof nextButton === "undefined"
+      ) {
+        console.error("Could not find resolving input.");
+        sendResponse({ success: false });
+        return;
+      }
+
+      if (isInputElement(resolvingInput) && isButtonElement(nextButton)) {
+        simulateTyping(resolvingInput, resolvingInputToFill);
+        nextButton.click();
+        sendResponse({ success: true });
+        return;
+      } else {
+        console.error("Could not find resolving input.");
+        sendResponse({ success: false });
+        return;
+      }
     } else {
       let signInType: "iam-signin" | "root-signin";
       const { account, username, password } = request.body;
