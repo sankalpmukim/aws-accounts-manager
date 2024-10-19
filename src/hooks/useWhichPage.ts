@@ -2,8 +2,11 @@ import { useEffect, useState } from "react";
 
 import { sendToContentScript } from "@plasmohq/messaging";
 
-import { WHICH_PAGE_MESSAGE } from "~messaging/constants";
-import type { Page } from "~messaging/types";
+import {
+  GO_TO_ROOT_SIGNIN_MESSAGE,
+  WHICH_PAGE_MESSAGE,
+} from "~messaging/constants";
+import type { GoToRootSigninRequestData, Page } from "~messaging/types";
 
 /**
  * React hook `useWhichPage` that makes sends a message to Content Script to
@@ -22,10 +25,11 @@ import type { Page } from "~messaging/types";
  * and then updates the answer and loading status.
  */
 
-export const useWhichPage = (): [Page, boolean] => {
+export const useWhichPage = (): [Page, boolean, () => void] => {
   const [page, setPage] = useState<Page>("unknown");
   const [loading, setLoading] = useState<boolean>(true);
 
+  // TODO add a refresh info trigger function
   useEffect(() => {
     sendToContentScript<never, { page: Page }>({
       name: WHICH_PAGE_MESSAGE,
@@ -42,5 +46,16 @@ export const useWhichPage = (): [Page, boolean] => {
     });
   }, []);
 
-  return [page, loading];
+  return [
+    page,
+    loading,
+    () => {
+      sendToContentScript<GoToRootSigninRequestData, {}>({
+        name: GO_TO_ROOT_SIGNIN_MESSAGE,
+        body: {},
+      }).then(() => {
+        console.log("Sent go to root signin message.");
+      });
+    },
+  ];
 };

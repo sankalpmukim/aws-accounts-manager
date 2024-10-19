@@ -1,12 +1,17 @@
 import type { PlasmoCSConfig } from "plasmo";
 import myFile from "url:./inject.js";
 
-import { FILL_LOGIN_MESSAGE, WHICH_PAGE_MESSAGE } from "~messaging/constants";
+import {
+  FILL_LOGIN_MESSAGE,
+  GO_TO_ROOT_SIGNIN_MESSAGE,
+  WHICH_PAGE_MESSAGE,
+} from "~messaging/constants";
 import {
   PAGE_TYPES,
   SIGNIN_PAGE_TYPES,
   type FillLoginRequest,
   type FillLoginResponse,
+  type GoToRootSigninRequest,
   type Page,
   type WhichPageRequest,
   type WhichPageResponse,
@@ -263,5 +268,20 @@ chrome.runtime.onMessage.addListener(function (
         }
       }, 1);
     }
+  }
+});
+
+// go to sign in root listener
+chrome.runtime.onMessage.addListener(function (
+  request: GoToRootSigninRequest,
+  _sender,
+  _sendResponse,
+): void {
+  console.log("Content script received message:", request);
+  if (request.name === GO_TO_ROOT_SIGNIN_MESSAGE) {
+    const rootAccountSigninLink = document.getElementById(
+      "root_account_signin",
+    );
+    rootAccountSigninLink.click();
   }
 });

@@ -26,6 +26,13 @@ export type FillLoginRequest = {
   body: FillLoginRequestData;
 };
 
+export interface GoToRootSigninRequestData {}
+
+export type GoToRootSigninRequest = {
+  name: string; // goToRootSignin
+  body: GoToRootSigninRequestData;
+};
+
 export type FillLoginResponse = (response: { success: boolean }) => void;
 
 export const PAGE_TYPES = {

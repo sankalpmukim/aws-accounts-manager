@@ -17,6 +17,8 @@ import { STORAGE_KEY, type StorageAccountType } from "~features/storage";
 import { useAutoFill } from "~hooks/useAutoFill";
 import { classNames } from "~utils";
 
+import { useWhichPage } from "../hooks/useWhichPage";
+
 // const statuses = {
 //   Complete: "text-green-700 bg-green-50 ring-green-600/20",
 //   "In progress": "text-gray-600 bg-gray-50 ring-gray-500/10",
@@ -30,6 +32,7 @@ export default function List() {
   );
   const editVal = useOpenEditAccountModal();
   const autoFillAccount = useAutoFill();
+  const [page, _loading, goToRootSignin] = useWhichPage();
 
   function updateLastUsed(index: number) {
     const newAccounts = [...accounts];
@@ -77,6 +80,11 @@ export default function List() {
             <button
               className="flex items-center justify-center gap-1 rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
               onClick={() => {
+                if (page === "aws-signin-iam" && account.account === "") {
+                  // user on AWS IAM login screen and trying to login to root account
+                  goToRootSignin();
+                  return;
+                }
                 autoFillAccount({
                   account: account.account === "" ? null : account.account,
                   username: account.username,
