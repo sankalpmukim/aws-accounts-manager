@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Encryption and Decryption Demo</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+
+      label {
+        font-weight: bold;
+      }
+
+      input[type="text"],
+      input[type="password"],
+      textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        font-size: 14px;
+      }
+
+      button {
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+
+      .output {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Encryption and Decryption Demo</h2>
+
+    <label for="message">Message to Encrypt:</label>
+    <textarea id="message" rows="4"></textarea>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" />
+
+    <button id="encryptBtn">Encrypt</button>
+    <button id="decryptBtn">Decrypt</button>
+
+    <div class="output">
+      <h3>Output:</h3>
+      <textarea id="output" rows="4" readonly></textarea>
+    </div>
+
+    <div class="output">
+      <h3>Time Taken (ms):</h3>
+      <p id="timeTaken">0</p>
+    </div>
+
+    <script>
+      const encoder = new TextEncoder();
+      const decoder = new TextDecoder();
+
+      const encryptBtn = document.getElementById("encryptBtn");
+      const decryptBtn = document.getElementById("decryptBtn");
+      const outputField = document.getElementById("output");
+      const timeTakenField = document.getElementById("timeTaken");
+
+      async function grindKey(password, difficulty = 10) {
+        return pbkdf2(
+          password,
+          password + password,
+          Math.pow(2, difficulty),
+          32,
+          "SHA-256",
+        );
+      }
+
+      async function getIv(password, data) {
+        const randomData = base64Encode(
+          window.crypto.getRandomValues(new Uint8Array(12)),
+        );
+        return pbkdf2(
+          password + randomData,
+          data + new Date().getTime().toString(),
+          1,
+          12,
+          "SHA-256",
+        );
+      }
+
+      async function pbkdf2(message, salt, iterations, keyLen, algorithm) {
+        const msgBuffer = new TextEncoder("utf-8").encode(message);
+        const saltBuffer = new TextEncoder("utf-8").encode(salt);
+
+        const key = await crypto.subtle.importKey(
+          "raw",
+          msgBuffer,
+          {
+            name: "PBKDF2",
+          },
+          false,
+          ["deriveBits"],
+        );
+
+        const buffer = await crypto.subtle.deriveBits(
+          {
+            name: "PBKDF2",
+            salt: saltBuffer,
+            iterations: iterations,
+            hash: algorithm,
+          },
+          key,
+          keyLen * 8,
+        );
+
+        return new Uint8Array(buffer);
+      }
+
+      async function aesEncrypt(data, password, difficulty = 10) {
+        const hashKey = await grindKey(password, difficulty);
+        const iv = await getIv(password, data);
+
+        const key = await window.crypto.subtle.importKey(
+          "raw",
+          hashKey,
+          {
+            name: "AES-GCM",
+          },
+          false,
+          ["encrypt"],
+        );
+
+        const encrypted = await window.crypto.subtle.encrypt(
+          {
+            name: "AES-GCM",
+            iv,
+            tagLength: 128,
+          },
+          key,
+          encoder.encode(data),
+        );
+
+        const result = Array.from(iv).concat(
+          Array.from(new Uint8Array(encrypted)),
+        );
+        return base64Encode(new Uint8Array(result));
+      }
+
+      async function aesDecrypt(ciphertext, password, difficulty = 10) {
+        const ciphertextBuffer = Array.from(base64Decode(ciphertext));
+        const hashKey = await grindKey(password, difficulty);
+
+        const key = await window.crypto.subtle.importKey(
+          "raw",
+          hashKey,
+          {
+            name: "AES-GCM",
+          },
+          false,
+          ["decrypt"],
+        );
+
+        const decrypted = await window.crypto.subtle.decrypt(
+          {
+            name: "AES-GCM",
+            iv: new Uint8Array(ciphertextBuffer.slice(0, 12)),
+            tagLength: 128,
+          },
+          key,
+          new Uint8Array(ciphertextBuffer.slice(12)),
+        );
+
+        return decoder.decode(new Uint8Array(decrypted));
+      }
+
+      function base64Encode(u8) {
+        return btoa(String.fromCharCode.apply(null, u8));
+      }
+
+      function base64Decode(str) {
+        return new Uint8Array(
+          atob(str)
+            .split("")
+            .map((c) => c.charCodeAt(0)),
+        );
+      }
+
+      encryptBtn.addEventListener("click", async () => {
+        const message = document.getElementById("message").value;
+        const password = document.getElementById("password").value;
+        if (message && password) {
+          const startTime = performance.now();
+          const encryptedMessage = await aesEncrypt(message, password);
+          const endTime = performance.now();
+
+          outputField.value = encryptedMessage;
+          timeTakenField.textContent = (endTime - startTime).toFixed(2);
+        } else {
+          alert("Please enter both message and password");
+        }
+      });
+
+      decryptBtn.addEventListener("click", async () => {
+        const encryptedMessage = outputField.value;
+        const password = document.getElementById("password").value;
+        if (encryptedMessage && password) {
+          const startTime = performance.now();
+          const decryptedMessage = await aesDecrypt(encryptedMessage, password);
+          const endTime = performance.now();
+
+          outputField.value = decryptedMessage;
+          timeTakenField.textContent = (endTime - startTime).toFixed(2);
+        } else {
+          alert("Please enter both the encrypted message and password");
+        }
+      });
+    </script>
+  </body>
+</html>
