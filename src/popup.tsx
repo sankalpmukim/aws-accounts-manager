@@ -6,10 +6,15 @@ import {
   useOpenCreateAccountModal,
 } from "~context/CreateAccountModal";
 import { EditAccountModalProvider } from "~context/EditAccountModal";
+import {
+  EncryptionSettingsModalProvider,
+  useOpenEncryptionSettingsModal,
+} from "~context/EncryptionSettingsModal";
 import { useWhichPage } from "~hooks/useWhichPage";
 
 import "~style.css";
 
+import EncryptionSettings from "~components/EncryptionSettings";
 import { PAGE_TYPES } from "~messaging/types";
 
 import ManageAccounts from "./components/ManageAccounts";
@@ -31,6 +36,7 @@ const SHOW_STATUS = {
 function Popup() {
   const openAddAccountModal = useOpenCreateAccountModal();
   const openManageAccountsModal = useOpenManageAccountsModal();
+  const openEncryptionSettingsModal = useOpenEncryptionSettingsModal();
   const [page, loading] = useWhichPage();
 
   return (
@@ -61,6 +67,13 @@ function Popup() {
           >
             Manage Accounts
           </button>
+          <button
+            type="button"
+            className="inline-flex items-center justify-center rounded-md bg-gray-50 px-4 py-2 text-sm font-medium text-gray-900 ring-1 ring-gray-300 hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2"
+            onClick={openEncryptionSettingsModal}
+          >
+            Encryption Settings
+          </button>
         </div>
       </div>
       <hr className="border-t border-gray-200" />
@@ -74,10 +87,13 @@ function IndexPopup() {
     <CreateAccountModalProvider>
       <EditAccountModalProvider>
         <ManageAccountsModalProvider>
-          <Popup />
-          <CreateAccount />
-          <EditAccount />
-          <ManageAccounts />
+          <EncryptionSettingsModalProvider>
+            <Popup />
+            <CreateAccount />
+            <EditAccount />
+            <ManageAccounts />
+            <EncryptionSettings />
+          </EncryptionSettingsModalProvider>
         </ManageAccountsModalProvider>
       </EditAccountModalProvider>
     </CreateAccountModalProvider>

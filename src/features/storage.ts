@@ -10,3 +10,10 @@ export type StorageAccountType = StoreInformation & {
 };
 
 export const STORAGE_KEY = "accounts";
+
+export interface EncryptionMetadataStorageType {
+  passwordHash: string;
+  lastModified: string; // good to have in future, basically a TODO.
+}
+
+export const ENCRYPTION_METADATA_STORAGE_KEY = "enc-metadata";
