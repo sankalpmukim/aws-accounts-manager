@@ -1,15 +1,22 @@
+import "~style.css";
+
+import React from "react";
+
 import CreateAccount from "~components/CreateAccount";
 import EditAccount from "~components/EditAccount";
 import List from "~components/List";
+import ReviewRequest from "~components/ReviewRequest";
 import {
   CreateAccountModalProvider,
   useOpenCreateAccountModal,
 } from "~context/CreateAccountModal";
 import { EditAccountModalProvider } from "~context/EditAccountModal";
+import {
+  ReviewRequestModalProvider,
+  useOpenReviewRequestModal,
+} from "~context/ReviewRequestModal";
+import { useReviewRequest } from "~hooks/useReviewRequest";
 import { useWhichPage } from "~hooks/useWhichPage";
-
-import "~style.css";
-
 import { PAGE_TYPES } from "~messaging/types";
 
 import ManageAccounts from "./components/ManageAccounts";
@@ -31,7 +38,16 @@ const SHOW_STATUS = {
 function Popup() {
   const openAddAccountModal = useOpenCreateAccountModal();
   const openManageAccountsModal = useOpenManageAccountsModal();
+  const openReviewRequestModal = useOpenReviewRequestModal();
   const [page, loading] = useWhichPage();
+  const shouldShowReview = useReviewRequest();
+
+  // Show review request modal when conditions are met
+  React.useEffect(() => {
+    if (shouldShowReview) {
+      openReviewRequestModal();
+    }
+  }, [shouldShowReview, openReviewRequestModal]);
 
   return (
     <div className="m-3 rounded-lg border border-gray-200 shadow">
@@ -74,10 +90,13 @@ function IndexPopup() {
     <CreateAccountModalProvider>
       <EditAccountModalProvider>
         <ManageAccountsModalProvider>
-          <Popup />
-          <CreateAccount />
-          <EditAccount />
-          <ManageAccounts />
+          <ReviewRequestModalProvider>
+            <Popup />
+            <CreateAccount />
+            <EditAccount />
+            <ManageAccounts />
+            <ReviewRequest />
+          </ReviewRequestModalProvider>
         </ManageAccountsModalProvider>
       </EditAccountModalProvider>
     </CreateAccountModalProvider>
