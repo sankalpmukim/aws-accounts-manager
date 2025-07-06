@@ -7,6 +7,7 @@ import { useStorage } from "@plasmohq/storage/hook";
 
 import { useReviewRequestModalContext } from "~context/ReviewRequestModal";
 import { REVIEW_STORAGE_KEY, type ReviewRequestData } from "~features/storage";
+import { BROWSER_STORES } from "~utils";
 
 export default function ReviewRequest() {
   const [modalIsOpen, setModalIsOpen] = useReviewRequestModalContext();
@@ -28,8 +29,14 @@ export default function ReviewRequest() {
     }));
     setModalIsOpen(false);
     // Open review link
-    console.log(`process.env.PLASMO_BROWSER`, process.env.PLASMO_BROWSER);
-    window.open("https://example.com", "_blank");
+    switch (process.env.PLASMO_BROWSER) {
+      case "firefox":
+        window.open(BROWSER_STORES.FIREFOX, `_blank`);
+      case "chrome":
+        window.open(BROWSER_STORES.CHROME, `_blank`);
+      default:
+        window.open(BROWSER_STORES.CHROME, `_blank`);
+    }
   };
 
   const handleAskLater = () => {
