@@ -1,7 +1,10 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { StarIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { StarIcon as StarSolidIcon } from "@heroicons/react/24/solid";
-import { Fragment } from "react";
+import {
+  HandThumbDownIcon,
+  HandThumbUpIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
+import { Fragment, useEffect, useState } from "react";
 
 import { useStorage } from "@plasmohq/storage/hook";
 
@@ -11,6 +14,9 @@ import { BROWSER_STORES } from "~utils";
 
 export default function ReviewRequest() {
   const [modalIsOpen, setModalIsOpen] = useReviewRequestModalContext();
+  const [currentView, setCurrentView] = useState<
+    "initial" | "positive" | "negative"
+  >("initial");
   const [reviewData, setReviewData] = useStorage<ReviewRequestData>(
     REVIEW_STORAGE_KEY,
     {
@@ -20,7 +26,15 @@ export default function ReviewRequest() {
     },
   );
 
-  const handleRateUs = () => {
+  const handleThumbsUp = () => {
+    setCurrentView("positive");
+  };
+
+  const handleThumbsDown = () => {
+    setCurrentView("negative");
+  };
+
+  const handleReviewStore = () => {
     // Update preference and close modal
     setReviewData((prev) => ({
       ...prev,
@@ -28,18 +42,16 @@ export default function ReviewRequest() {
       lastReviewPromptDate: new Date().toISOString(),
     }));
     setModalIsOpen(false);
-    // Open review link
-    switch (process.env.PLASMO_BROWSER) {
-      case "firefox":
-        window.open(BROWSER_STORES.FIREFOX, `_blank`);
-      case "chrome":
-        window.open(BROWSER_STORES.CHROME, `_blank`);
-      default:
-        window.open(BROWSER_STORES.CHROME, `_blank`);
-    }
+
+    // Open appropriate browser store
+    const browserStore =
+      process.env.PLASMO_BROWSER === "firefox"
+        ? BROWSER_STORES.FIREFOX
+        : BROWSER_STORES.CHROME;
+    window.open(browserStore, "_blank");
   };
 
-  const handleAskLater = () => {
+  const handleNotNow = () => {
     // Update last prompt date and close modal
     setReviewData((prev) => ({
       ...prev,
@@ -49,20 +61,116 @@ export default function ReviewRequest() {
     setModalIsOpen(false);
   };
 
-  const handleNeverAsk = () => {
-    // Set preference to never and close modal
-    setReviewData((prev) => ({
-      ...prev,
-      reviewPreference: "never",
-      lastReviewPromptDate: new Date().toISOString(),
-    }));
-    setModalIsOpen(false);
-  };
-
   const handleClose = () => {
     // Treat close as "ask later"
-    handleAskLater();
+    handleNotNow();
   };
+
+  // Reset to initial view when modal opens
+  useEffect(() => {
+    if (modalIsOpen) {
+      setCurrentView("initial");
+    }
+  }, [modalIsOpen]);
+
+  const renderInitialView = () => (
+    <div className="text-center">
+      <Dialog.Title
+        as="h3"
+        className="mb-4 text-lg font-semibold leading-6 text-gray-900"
+      >
+        Are you finding this extension useful?
+      </Dialog.Title>
+
+      <div className="mt-6 flex justify-center gap-6">
+        <button
+          type="button"
+          className="flex flex-col items-center rounded-lg p-4 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          onClick={handleThumbsUp}
+        >
+          <HandThumbUpIcon className="mb-2 h-8 w-8 text-green-500" />
+          <span className="text-sm font-medium text-gray-900">Yes</span>
+        </button>
+
+        <button
+          type="button"
+          className="flex flex-col items-center rounded-lg p-4 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          onClick={handleThumbsDown}
+        >
+          <HandThumbDownIcon className="mb-2 h-8 w-8 text-red-500" />
+          <span className="text-sm font-medium text-gray-900">No</span>
+        </button>
+      </div>
+    </div>
+  );
+
+  const renderPositiveView = () => (
+    <div className="text-center">
+      <Dialog.Title
+        as="h3"
+        className="mb-4 text-lg font-semibold leading-6 text-gray-900"
+      >
+        Great! Help us spread the word
+      </Dialog.Title>
+
+      <p className="mb-6 text-sm text-gray-500">
+        Would you mind leaving a quick review on the browser store? It really
+        helps us out!
+      </p>
+
+      <div className="flex flex-col gap-3">
+        <button
+          type="button"
+          className="inline-flex w-full justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
+          onClick={handleReviewStore}
+        >
+          Leave a Review
+        </button>
+
+        <button
+          type="button"
+          className="inline-flex w-full justify-center rounded-md bg-white px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
+          onClick={handleNotNow}
+        >
+          Not now
+        </button>
+      </div>
+    </div>
+  );
+
+  const renderNegativeView = () => (
+    <div className="text-center">
+      <Dialog.Title
+        as="h3"
+        className="mb-4 text-lg font-semibold leading-6 text-gray-900"
+      >
+        Thanks for your feedback
+      </Dialog.Title>
+
+      <p className="mb-6 text-sm text-gray-500">
+        We appreciate your honesty. If you have suggestions for improvement,
+        we'd love to hear them!
+      </p>
+
+      <div className="flex flex-col gap-3">
+        <button
+          type="button"
+          className="inline-flex w-full justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
+          onClick={handleReviewStore}
+        >
+          Share Feedback
+        </button>
+
+        <button
+          type="button"
+          className="inline-flex w-full justify-center rounded-md bg-white px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
+          onClick={handleNotNow}
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  );
 
   return (
     <Transition.Root show={modalIsOpen} as={Fragment}>
@@ -90,7 +198,7 @@ export default function ReviewRequest() {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-6 py-6 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm">
                 <div className="absolute right-0 top-0 pr-4 pt-4">
                   <button
                     type="button"
@@ -98,76 +206,13 @@ export default function ReviewRequest() {
                     onClick={handleClose}
                   >
                     <span className="sr-only">Close</span>
-                    <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                    <XMarkIcon className="h-5 w-5" aria-hidden="true" />
                   </button>
                 </div>
 
-                {/* Top Info */}
-                <div className="sm:flex sm:items-start">
-                  <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 sm:mx-0 sm:h-10 sm:w-10">
-                    <StarSolidIcon
-                      className="h-6 w-6 text-indigo-600"
-                      aria-hidden="true"
-                    />
-                  </div>
-                  <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                    <Dialog.Title
-                      as="h3"
-                      className="text-base font-semibold leading-6 text-gray-900"
-                    >
-                      Enjoying AWS Accounts Manager?
-                    </Dialog.Title>
-                    <div className="mt-2">
-                      <p className="text-sm text-gray-500">
-                        If you're finding this extension helpful, we'd love to
-                        hear from you!
-                      </p>
-                      <p className="mt-1 text-sm text-gray-500">
-                        Your review helps us improve and reach more users.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Star Rating Visual */}
-                <div className="mt-4 flex justify-center">
-                  <div className="flex items-center">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <StarSolidIcon
-                        key={star}
-                        className="h-8 w-8 text-yellow-400"
-                        aria-hidden="true"
-                      />
-                    ))}
-                  </div>
-                </div>
-
-                {/* Action Buttons */}
-                <div className="mt-5 sm:mt-4 sm:flex sm:flex-col sm:gap-3">
-                  <button
-                    type="button"
-                    className="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
-                    onClick={handleRateUs}
-                  >
-                    Rate Us ⭐
-                  </button>
-
-                  <button
-                    type="button"
-                    className="inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
-                    onClick={handleAskLater}
-                  >
-                    {`Ask Me Later`}
-                  </button>
-
-                  <button
-                    type="button"
-                    className="inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-medium text-gray-500 hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
-                    onClick={handleNeverAsk}
-                  >
-                    Don't Ask Again
-                  </button>
-                </div>
+                {currentView === "initial" && renderInitialView()}
+                {currentView === "positive" && renderPositiveView()}
+                {currentView === "negative" && renderNegativeView()}
               </Dialog.Panel>
             </Transition.Child>
           </div>
