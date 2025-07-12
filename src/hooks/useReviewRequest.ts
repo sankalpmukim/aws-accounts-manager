@@ -4,7 +4,7 @@ import { useStorage } from "@plasmohq/storage/hook";
 
 import { REVIEW_STORAGE_KEY, type ReviewRequestData } from "~features/storage";
 
-const ONE_WEEK_MS = 1 * 1 * 1 * 30 * 1000; // 7 days in milliseconds
+const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
 
 export function useReviewRequest(): boolean {
   const [shouldShowReview, setShouldShowReview] = useState(false);
