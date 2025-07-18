@@ -43,8 +43,13 @@
       "*://*.aws.amazon.com/*"
     ],
     "permissions": [
-      "storage"
+      "storage",
+      "tabs"
     ],
+    "options_ui": {
+      "page": "options.html",
+      "open_in_tab": true
+    },
     "browser_specific_settings": {
       "gecko": {
         "id": "$FIREFOX_EXT_ID"

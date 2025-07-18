@@ -19,11 +19,6 @@ import { useReviewRequest } from "~hooks/useReviewRequest";
 import { useWhichPage } from "~hooks/useWhichPage";
 import { PAGE_TYPES } from "~messaging/types";
 
-import ManageAccounts from "./components/ManageAccounts";
-import {
-  ManageAccountsModalProvider,
-  useOpenManageAccountsModal,
-} from "./context/ManageAccountModal";
 
 const SHOW_STATUS = {
   unknown: "Currently not on AWS signin page.",
@@ -37,8 +32,14 @@ const SHOW_STATUS = {
 
 function Popup() {
   const openAddAccountModal = useOpenCreateAccountModal();
-  const openManageAccountsModal = useOpenManageAccountsModal();
   const openReviewRequestModal = useOpenReviewRequestModal();
+
+  const handleManageAccountsClick = () => {
+    // Open options page for all browsers
+    if (typeof chrome !== 'undefined' && chrome.runtime) {
+      chrome.runtime.openOptionsPage();
+    }
+  };
   const [page, loading] = useWhichPage();
   const shouldShowReview = useReviewRequest();
 
@@ -73,7 +74,7 @@ function Popup() {
           <button
             type="button"
             className="inline-flex items-center justify-center rounded-md bg-gray-50 px-4 py-2 text-sm font-medium text-gray-900 ring-1 ring-gray-300 hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2"
-            onClick={openManageAccountsModal}
+            onClick={handleManageAccountsClick}
           >
             Manage Accounts
           </button>
@@ -89,15 +90,12 @@ function IndexPopup() {
   return (
     <CreateAccountModalProvider>
       <EditAccountModalProvider>
-        <ManageAccountsModalProvider>
-          <ReviewRequestModalProvider>
-            <Popup />
-            <CreateAccount />
-            <EditAccount />
-            <ManageAccounts />
-            <ReviewRequest />
-          </ReviewRequestModalProvider>
-        </ManageAccountsModalProvider>
+        <ReviewRequestModalProvider>
+          <Popup />
+          <CreateAccount />
+          <EditAccount />
+          <ReviewRequest />
+        </ReviewRequestModalProvider>
       </EditAccountModalProvider>
     </CreateAccountModalProvider>
   );
