@@ -43,8 +43,7 @@
       "*://*.aws.amazon.com/*"
     ],
     "permissions": [
-      "storage",
-      "tabs"
+      "storage"
     ],
     "options_ui": {
       "page": "options.html",
